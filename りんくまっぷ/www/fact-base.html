@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>対人地図</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h3>Fact まっぷ</h3>
+        <div class="controls">
+            <label for="duration">期間:</label>
+            <select id="duration">
+                <option value="week">1週間</option>
+                <option value="month">1か月</option>
+                <option value="year">1年間</option>
+            </select>
+
+            <label for="numContacts"> 人数:</label>
+            <select id="numContacts">
+                <option value="5">5人</option>
+                <option value="7">7人</option>
+                <option value="10">10人</option>
+            </select>
+        </div>
+        <br>
+        <div class="button-container">
+            <button onclick="drawRelationshipMap()">作成</button>
+        </div>
+        <div id="map-container">
+            <div id="user-center">自分</div>
+            <svg id="relationshipMap" width="100%" height="100%"></svg>
+        </div>
+        
+    </div>
+    <script src="js/relationshipMap.js"></script>
+</body>
+</html>
+

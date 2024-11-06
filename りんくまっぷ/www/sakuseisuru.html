@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>対人地図</title>
+    <link rel="stylesheet" href="css/ 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>対人地図</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+       body {
+            font-family: 'M+ PLUS Rounded 1c', sans-serif;
+            text-align: center;
+            background-color: #FFF4E5; /* 薄いオレンジ色の背景 */
+            color: #2e3851; /* 文字色 */
+        }
+        .container {
+            margin: 7px;
+        }
+        table {
+            margin: 7px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 4px;
+            font-size: 12px;
+            font-weight: normal; 
+        }
+        .short-input {
+            width: 80px; 
+        }
+        #map-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 20px auto;
+            border-radius: 50%;
+        }
+        #user-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background-color: #F5CBA0; /* 優しい黄色 */
+            color: #2e3851;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 1;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); 
+        }
+        .person-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #F9E79F; /* 薄い黄色 */
+            color: #2e3851;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            z-index: 2;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); 
+        }
+        .button-container {
+            margin: 10px;
+        }
+        .line {
+            position: absolute;
+            width: 1px;
+            background-color: #000;
+            transform-origin: 0 0;
+            z-index: 0;
+        }
+        .save-button {
+            background-color: #F5CBA0; /* 優しい黄色 */
+            color: #2e3851;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .review-button {
+            background-color: #A2D5A8; /* 緑系の色 */
+            color: #2e3851;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            opacity: 0.8; /* ボタンのホバー効果 */
+        }
+      p.color1 {
+          color: #2e3851; /* 文字色 */
+            font-size: 24px;
+            font-weight: lighter;
+        
+
+        }
+        h2 {
+            font-size: 2em;
+            color: #4A4A4A;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+    
+ <p style="margin-bottom: 50px;" class="color1">
+         Personal まっぷ</p>
+    <div class="input-section">
+        <table>          
+            <tr>
+                <th>たいとる</th>
+                <th><input type="text" class="short-input" id="title"></th>
+            </tr>
+        </table>
+    </div>
+
+    <br> <!-- セクション間のスペース -->
+
+    <div class="input-section">
+        <table>
+            <tr>
+                <th>親しい人</th>
+                <th><input type="text" class="short-input" id="close1"></th>
+                <th><input type="text" class="short-input" id="close2"></th>
+            </tr>
+            <tr>
+                <th>よく話す人</th>
+                <th><input type="text" class="short-input" id="talk1"></th>
+                <th><input type="text" class="short-input" id="talk2"></th>
+            </tr>
+            <tr>
+                <th>影響を受ける人</th>
+                <th><input type="text" class="short-input" id="influence1"></th>
+                <th><input type="text" class="short-input" id="influence2"></th>
+            </tr>
+            <tr>
+                <th>大切な人</th>
+                <th><input type="text" class="short-input" id="important1"></th>
+                <th><input type="text" class="short-input" id="important2"></th>
+            </tr>
+            <tr>
+                <th>その他</th>
+                <th><input type="text" class="short-input" id="other1"></th>
+                <th><input type="text" class="short-input" id="other2"></th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+        <br><div class="button-container">
+        <button class="save-button" onclick="createMap()">アイコン化</button></div>
+
+        <br>
+        <div id="map-container">
+            <div id="user-center">自分</div>
+            <svg id="line-container" width="100%" height="100%" style="position: absolute; top: 0; left: 0;"></svg>
+        </div>
+        
+<div class="button-container">
+    <button class="save-button" onclick="saveMap()">保存</button>
+    <button class="btn-green" onclick="location.href='index.html'">戻る</button>
+</div>
+
+    </div>
+           
+    <script>
+        let activeIcon = null;
+        let offsetX = 0;
+        let offsetY = 0;
+         // Monaca Cloud DBに接続
+    var db = openDatabase("myDatabase", "1.0", "Human Relationships", 1024 * 1024);
+
+    // テーブル作成
+    db.transaction(function(tx) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS maps (id INTEGER PRIMARY KEY, name TEXT, x REAL, y REAL)');
+    });
+
+
+        function createMap() {
+            const ids = ['close1', 'close2', 'talk1', 'talk2', 'influence1', 'influence2', 'important1', 'important2', 'other1', 'other2'];
+            const names = ids.map(id => document.getElementById(id).value).filter(name => name);
+
+            const mapContainer = document.getElementById('map-container');
+            const userCenter = document.getElementById('user-center');
+            const svg = document.getElementById('line-container');
+            
+            while (mapContainer.children.length > 2) {
+                mapContainer.removeChild(mapContainer.lastChild);
+            }
+
+            svg.innerHTML = '';
+
+            names.forEach((name, index) => {
+                const angle = (360 / names.length) * index;
+                const radians = angle * (Math.PI / 180);
+                const radius = 100;
+                const x = Math.cos(radians) * radius + mapContainer.clientWidth / 2 - 20;
+                const y = Math.sin(radians) * radius + mapContainer.clientHeight / 2 - 20;
+
+                const personIcon = document.createElement('div');
+                personIcon.className = 'person-icon';
+                personIcon.style.left = `${x}px`;
+                personIcon.style.top = `${y}px`;
+                personIcon.textContent = name;
+
+                personIcon.addEventListener('mousedown', dragStart);
+                personIcon.addEventListener('mousemove', dragMove);
+                personIcon.addEventListener('mouseup', dragEnd);
+                personIcon.addEventListener('mouseleave', dragEnd);
+
+                personIcon.addEventListener('touchstart', dragStart);
+                personIcon.addEventListener('touchmove', dragMove);
+                personIcon.addEventListener('touchend', dragEnd);
+
+                mapContainer.appendChild(personIcon);
+
+                drawLine(userCenter, personIcon);
+            });
+        }
+
+        
+monaca.cloud.DB.open({
+    "collection": "maps",
+    "apikey": "84817ab4-cf9b-4ee3-a4b4-5e2e894dea92" // 追記専用キー
+});
+         // データを保存する関数
+    function saveMap() {
+        db.transaction(function(tx) {
+            // 既存のデータをクリア
+            tx.executeSql('DELETE FROM maps');
+
+            // 各アイコンの位置情報を保存
+            document.querySelectorAll('.person-icon').forEach(icon => {
+                const name = icon.textContent;
+                const x = parseFloat(icon.style.left);
+                const y = parseFloat(icon.style.top);
+
+                tx.executeSql('INSERT INTO maps (name, x, y) VALUES (?, ?, ?)', [name, x, y], function(tx, res) {
+                    console.log("保存成功: " + name);
+                }, function(tx, err) {
+                    console.error("保存エラー: " + err.message);
+                });
+            });
+        });
+    }
+
+    // データをロードする関数
+    function loadMap() {
+        const mapContainer = document.getElementById('map-container');
+
+        // 既存のアイコンをクリア
+        while (mapContainer.children.length > 1) {
+            mapContainer.removeChild(mapContainer.lastChild);
+        }
+
+        // データベースからデータを取得して再描画
+        db.transaction(function(tx) {
+            tx.executeSql('SELECT * FROM maps', [], function(tx, results) {
+                for (let i = 0; i < results.rows.length; i++) {
+                    const row = results.rows.item(i);
+                    const name = row.name;
+                    const x = row.x;
+                    const y = row.y;
+
+                    const personIcon = document.createElement('div');
+                    personIcon.className = 'person-icon';
+                    personIcon.style.left = `${x}px`;
+                    personIcon.style.top = `${y}px`;
+                    personIcon.textContent = name;
+
+                    personIcon.addEventListener('mousedown', dragStart);
+                    personIcon.addEventListener('mousemove', dragMove);
+                    personIcon.addEventListener('mouseup', dragEnd);
+                    personIcon.addEventListener('mouseleave', dragEnd);
+
+                    personIcon.addEventListener('touchstart', dragStart);
+                    personIcon.addEventListener('touchmove', dragMove);
+                    personIcon.addEventListener('touchend', dragEnd);
+
+                    mapContainer.appendChild(personIcon);
+                }
+            });
+        });
+    }
+
+        function drawLine(startElem, endElem) {
+            const svg = document.getElementById('line-container');
+
+            const startRect = startElem.getBoundingClientRect();
+            const endRect = endElem.getBoundingClientRect();
+            const mapRect = svg.getBoundingClientRect();
+
+            const x1 = startRect.left + startRect.width / 2 - mapRect.left;
+            const y1 = startRect.top + startRect.height / 2 - mapRect.top;
+            const x2 = endRect.left + endRect.width / 2 - mapRect.left;
+            const y2 = endRect.top + endRect.height / 2 - mapRect.top;
+
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute('x1', x1);
+            line.setAttribute('y1', y1);
+            line.setAttribute('x2', x2);
+            line.setAttribute('y2', y2);
+            line.setAttribute('stroke', 'black');
+            line.setAttribute('stroke-width', '1');
+
+            svg.appendChild(line);
+        }
+
+        function drawLines() {
+            const userCenter = document.getElementById('user-center');
+            const svg = document.getElementById('line-container');
+            svg.innerHTML = ''; // Clear existing lines
+            document.querySelectorAll('.person-icon').forEach(icon => {
+                drawLine(userCenter, icon);
+            });
+        }
+
+        function dragStart(e) {
+            if (e.type === "touchstart") {
+                e = e.touches[0];
+            }
+            activeIcon = e.target;
+            offsetX = e.clientX - activeIcon.getBoundingClientRect().left;
+            offsetY = e.clientY - activeIcon.getBoundingClientRect().top;
+            activeIcon.style.opacity = '0.5';
+        }
+
+        function dragMove(e) {
+            if (!activeIcon) return;
+            if (e.type === "touchmove") {
+                e.preventDefault();
+                e = e.touches[0];
+            }
+            const mapContainer = document.getElementById('map-container');
+            const rect = mapContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left - offsetX;
+            const y = e.clientY - rect.top - offsetY;
+            activeIcon.style.left = `${x}px`;
+            activeIcon.style.top = `${y}px`;
+
+            drawLines();
+        }
+
+        function dragEnd(e) {
+            if (e.type === "touchend") {
+                e = e.changedTouches[0];
+            }
+            if (activeIcon) {
+                activeIcon.style.opacity = '1';
+                activeIcon = null;
+            }
+        }
+    </script>
+</body>
+</html>
