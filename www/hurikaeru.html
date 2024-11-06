@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タイムライン</title>
+    <style>
+        h2 {
+            font-size: 2em;
+            color: #4A4A4A;
+            margin-bottom: 20px;
+        }
+        
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 0;
+            padding: 20px;
+            background-color: #FFF4E5; /* 薄いオレンジ色の背景 */
+            color: #2e3851; /* 文字色 */
+        }
+
+        .timeline {
+            position: relative;
+            width: 3px;
+            background-color:  #F5CBA0;
+            height: 70vh;
+            margin: 0 40px;
+            border-radius: 5px;
+        }
+
+        .timeline-event {
+            position: relative;
+            margin-bottom: 50px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .timeline-event.right {
+            justify-content: flex-end;
+        }
+
+        .timeline-event::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color:  #F9E79F; 
+            border-radius: 50%;
+            left: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 8px rgba(127, 183, 126, 0.6);
+        }
+
+        .timeline-event.right::after {
+            left: auto;
+            right: -5px;
+        }
+
+        .bubble {
+            padding: 12px 24px;
+            border-radius: 20px;
+            background-color:#F5CBA0; /* 優しい黄色のバブル */
+            color: #2e3851; /* 文字色 */ 
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            white-space: nowrap;
+            transition: background-color 0.3s;
+        }
+
+        .bubble:hover {
+            background-color: #F9E79F; /* ホバー時の柔らかい変化 */
+        }
+
+        .age-label {
+            position: absolute;
+            left: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #2e3851;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #FFF;
+            
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            /* 他のスタイルは省略 */
+            background-image: linear-gradient(to bottom, #F5CBA0, #F9E79F);
+            transition: background-position 0.3s ease-in-out;
+            }
+
+            button:hover {
+                background-position: 100%;
+                }
+
+    
+        p.color1 {
+            color: #2e3851; /* 文字色 */
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <p style="margin-bottom: 50px;" class="color1">
+        My Road
+    </p>
+    
+    <div class="timeline">
+        <!-- 各イベントの構造 -->
+        <div class="timeline-event left" onclick="window.location.href='rei1.html'">
+            <div class="bubble">転校</div>
+            <div class="age-label">10歳</div>
+        </div>
+        <div class="timeline-event left" onclick="window.location.href='rei2.html'">
+            <div class="bubble">修学旅行</div>
+            <div class="age-label">15歳</div>
+        </div>
+        <div class="timeline-event left" onclick="window.location.href='rei3.html'">
+            <div class="bubble">成人</div>
+            <div class="age-label">20歳</div>
+        </div>
+    </div>
+    
+    <button onclick="window.location.href='index.html'">戻る</button>
+</body>
+</html>

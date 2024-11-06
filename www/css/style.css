@@ -1,0 +1,278 @@
+#canvas{
+    width: 100px;
+    height: 100px;
+  }
+
+.btn {
+    display: inline-block;
+    width: 130px;
+    height: 130px;
+    position: relative;
+    font: bold 90px Helvetica;
+    margin: 20px;
+    text-align: center;
+    line-height: 100px; 
+  }
+  
+  .btn-canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  
+  .btn-green {
+    border-color:#83aa83;
+    background-color: rgba(67, 206, 127, 0.2);
+  }
+  
+  .btn-red {
+    border-color: rgba(255, 165, 70, 1.0); /* 濃いめのオレンジ枠線 */
+    background-color: rgba(255, 165, 70, 0.2); /* 柔らかなオレンジ背景 */
+    color: #2e3851;
+  }
+  
+  .btn-yellow {
+    border-color: rgba(33, 1, 72, 1.0);
+    background-color: rgba(0, 0, 128, 0.2);
+  }
+  
+  .btn-blue {
+    border-color: rgba(0, 255, 255, 1.0);
+    background-color: rgba(0, 0, 205, 0.2);
+  }
+
+  .top-box {
+    position: relative;
+  }
+
+  .dropmenu {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    width: 1500px; /* 750px -> 1500px */
+    margin: 0 auto;
+    padding: 0;
+  }
+  
+  .dropmenu li {
+    background: #59998d;
+    text-align: center;
+    box-shadow: 2px 2px 2px rgba(82, 179, 79, 0.7) inset, -2px -2px 2px rgba(115, 139, 179, 0.7) inset; /* Adjusted for 2x */
+    width: 25%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  
+  .dropmenu li ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    perspective: 1000px; /* Adjusted for 2x */
+  }
+  
+  .dropmenu ul li {
+    transform: rotateY(90deg);
+    transform-origin: 50%;
+    transition: 0.5s;
+  }
+  
+  .dropmenu li:hover li {
+    transform: rotateY(0);
+  }
+  
+  .dropmenu ul li:nth-child(2) {
+    transition-delay: 0.1s;
+  }
+  
+  .dropmenu ul li:nth-child(3) {
+    transition-delay: 0.2s;
+  }
+  
+  .dropmenu li ul li {
+    width: 100%; /* Changed to 100% to match the width of the parent li */
+  }
+  
+  .dropmenu li a {
+    margin: 0;
+    padding: 14px 0; /* 7px 0 -> 14px 0 */
+    display: block;
+    color: #f8d800;
+    font: bold 22px "游ゴシック", Helvetica; /* 11px -> 22px */
+    letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+  
+  .dropmenu li a:hover {
+    background: #39796d;
+  }
+  
+  .dropmenu li:hover ul {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .dropmenu li ul li a {
+    text-align: left;
+    padding: 14px 20px; /* 7px 10px -> 14px 20px */
+    border-top: 2px solid #728db3; /* Adjusted for 2x */
+  }
+  
+  .navbar {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 80px; /* 40px -> 80px */
+    display: flex;
+    align-content: space-around;
+    position: absolute;
+    z-index: 99;
+  }
+  
+  .navbar-l {
+    margin: auto 0;
+  }
+  
+  .navlogo {
+    color: #59998d;
+    font: bold 40px "游ゴシック", Helvetica; /* 20px -> 40px */
+    text-align: left;
+    margin: auto 16px auto 0px; /* 8px -> 16px */
+    white-space: nowrap;
+  }
+  
+  .navbar-r {
+    background: #59998d;
+    box-shadow: 2px 2px 2px rgba(82, 179, 79, 0.7) inset, -2px -2px 2px rgba(115, 139, 179, 0.7) inset, -2px -2px 2px rgba(115, 139, 179, 0.7) inset, 0px 2px 6px #728db3; /* Adjusted for 2x */
+    width: 100%;
+    margin: auto 0;
+    padding: 0;
+  }
+  
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialog {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dialog input[type="text"], .dialog input[type="range"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.dialog button {
+    margin: 5px;
+}
+
+
+ .short-input {
+        width: 70px; /* 横幅を100pxに設定 */
+    }
+
+body, h3, #user-center, .button-container button {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: #333; /* フォントカラーを親しみやすい黒色に */
+}
+
+.input-section {
+    margin-bottom: 6px; /* セクション間のスペース */
+    padding: 6px; /* 内部のパディング */
+    background-color: #F9E79F; /* 薄い黄色の背景 */
+    border-radius: 8px; /* 丸みを帯びた角 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 影をつけて立体感を */
+}
+
+h3 {
+    color: #6A8E54; /* 柔らかい緑色、親しみやすいトーン */
+    margin-bottom: 20px; /* 下に少し余白を追加 */
+}
+
+.short-input {
+    width: 70px; 
+    border: 1px solid #ccc; /* ボーダーを追加 */
+    border-radius: 4px; /* 角を丸める */
+    padding: 4px; /* 内部のパディング */
+}
+   
+
+
+/* 自分の位置のスタイル */
+#user-center {
+    font-weight: 700;
+    font-size: 1.2em;
+    color: #FF006E; /* かわいらしいピンク系の色 */
+}
+
+.button-container button {
+    font-size: 1em;
+    font-weight: 300;
+    padding: 5px 10px;
+    background-color: #FFD166; /* 優しい黄色 */
+    color: #333; /* 黒系の文字色で読みやすく */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-container button:hover {
+    background-color: #F4A261; /* ホバー時に少し濃いオレンジ系の黄色 */
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column; /* 縦に並べる */
+    align-items: center; /* 中央に配置 */
+    margin-top: 30px; /* 上に余白 */
+}
+
+.save-button {
+    margin-bottom: 30px; /* 保存ボタンの下に余白 */
+    padding: 10px 20px; /* ボタンのパディング */
+    background-color: #F5CBA0; /* 優しい黄色 */
+    color: #2e3851; /* 文字色 */
+    border: none; /* ボーダーを削除 */
+    border-radius: 5px; /* 角を丸く */
+    cursor: pointer; /* カーソルをポインターに */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* シャドウ */
+    transition: background-color 0.3s; /* ホバー効果のトランジション */
+}
+
+.review-button {
+    margin-top: 20px; /* 上部に間をあける */
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #FFF;
+    background-color: #A8D5BA; /* 優しい緑系の背景色 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #F9D6B2; /* ホバー時の色 */
+}
+.review-button:hover {
+    background-color: #95C8A2; /* ホバー時の柔らかい緑系の色 */
+}
